@@ -7,15 +7,15 @@ const notes = require("../db/db.json");
 const { json } = require("express");
 
 const {
-    readFromFile,
-    readAndAppend,
-    writeToFile,
-  } = require("../helpers/fsUtils");
+    readFile,
+    appendFile,
+    writeFile,
+  } = require("../helpers/utils");
 
 
 // GET Route for retrieving all the notes
 router.get("/notes", (req, res) => {
-  readFromFile("db/db.json").then((data) => res.json(JSON.parse(data)));
+  readFile("db/db.json").then((data) => res.json(JSON.parse(data)));
 });
 
 // POST Route for a new notes
@@ -29,7 +29,7 @@ router.post("/notes", (req, res) => {
       id: uuidv4(),
     };
     notes.push(newNote);
-    writeToFile("db/db.json", notes);
+    writeFile("db/db.json", notes);
     res.json(notes);
     console.log("Note Added!");
   } else {
@@ -43,7 +43,7 @@ router.delete("/notes/:id", (req, res) => {
   const noteId = req.params.id; 
   // Array of all notes minus the URL id note
   const notesKeep = notes.filter((note) => note.id !== noteId);
-  writeToFile("db/db.json", notesKeep);
+  writeFile("db/db.json", notesKeep);
   res.json(notesKeep);
 });
 
