@@ -10,7 +10,7 @@ const {
     readFile,
     appendFile,
     writeFile,
-  } = require("../helpers/utils");
+  } = require("../../utils/utils");
 
 
 // GET Route for retrieving all the notes
