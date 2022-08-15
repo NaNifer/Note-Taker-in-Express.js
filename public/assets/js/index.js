@@ -5,19 +5,19 @@ let newNoteBtn;
 let noteList;
 
 if (window.location.pathname === '/notes') {
-  noteTitle = document.querySelector('.note-title');
-  noteText = document.querySelector('.note-textarea');
-  saveNoteBtn = document.querySelector('.save-note');
-  newNoteBtn = document.querySelector('.new-note');
+  noteTitle = document.getElementById('noteTitle');
+  noteText = document.getElementById('noteText');
+  saveNoteBtn = document.getElementById('saveNoteBtn');
+  newNoteBtn = document.getElementById('newNoteBtn');
   noteList = document.querySelectorAll('.list-container .list-group');
 }
 
-// Show an element
+// Show note
 const show = (elem) => {
   elem.style.display = 'inline';
 };
 
-// Hide an element
+// Hide note
 const hide = (elem) => {
   elem.style.display = 'none';
 };
@@ -50,7 +50,7 @@ const deleteNote = (id) =>
     },
   });
 
-const renderActiveNote = () => {
+const printActiveNote = () => {
   hide(saveNoteBtn);
 
   if (activeNote.id) {
@@ -66,14 +66,14 @@ const renderActiveNote = () => {
   }
 };
 
-const handleNoteSave = () => {
+const noteSave = () => {
   const newNote = {
     title: noteTitle.value,
     text: noteText.value,
   };
   saveNote(newNote).then(() => {
-    getAndRenderNotes();
-    renderActiveNote();
+    getAndPrintNotes();
+    printActiveNote();
   });
 };
 
@@ -90,8 +90,8 @@ const handleNoteDelete = (e) => {
   }
 
   deleteNote(noteId).then(() => {
-    getAndRenderNotes();
-    renderActiveNote();
+    getAndPrintNotes();
+    printActiveNote();
   });
 };
 
@@ -99,16 +99,16 @@ const handleNoteDelete = (e) => {
 const handleNoteView = (e) => {
   e.preventDefault();
   activeNote = JSON.parse(e.target.parentElement.getAttribute('data-note'));
-  renderActiveNote();
+  printActiveNote();
 };
 
 // Sets the activeNote to and empty object and allows the user to enter a new note
-const handleNewNoteView = (e) => {
+const newNoteView = (e) => {
   activeNote = {};
-  renderActiveNote();
+  printActiveNote();
 };
 
-const handleRenderSaveBtn = () => {
+const saveAndPrintHandler = () => {
   if (!noteTitle.value.trim() || !noteText.value.trim()) {
     hide(saveNoteBtn);
   } else {
@@ -171,13 +171,13 @@ const renderNoteList = async (notes) => {
 };
 
 // Gets notes from the db and renders them to the sidebar
-const getAndRenderNotes = () => getNotes().then(renderNoteList);
+const getAndPrintNotes = () => getNotes().then(renderNoteList);
 
 if (window.location.pathname === '/notes') {
-  saveNoteBtn.addEventListener('click', handleNoteSave);
-  newNoteBtn.addEventListener('click', handleNewNoteView);
-  noteTitle.addEventListener('keyup', handleRenderSaveBtn);
-  noteText.addEventListener('keyup', handleRenderSaveBtn);
+  saveNoteBtn.addEventListener('click', noteSave);
+  newNoteBtn.addEventListener('click', newNoteView);
+  noteTitle.addEventListener('keyup', saveAndPrintHandler);
+  noteText.addEventListener('keyup', saveAndPrintHandler);
 }
 
-getAndRenderNotes();
+getAndPrintNotes();
