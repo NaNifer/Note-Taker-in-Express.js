@@ -3,7 +3,7 @@ const router = require('express').Router();
 const util = require('util');
 const { v4: uuidv4 } = require("uuid");
 
-const notes = require("../db/db.json");
+const db = require("../../db/db.json");
 const { json } = require("express");
 
 const {
@@ -28,9 +28,9 @@ router.post("/notes", (req, res) => {
       text,
       id: uuidv4(),
     };
-    notes.push(newNote);
-    writeFile("db/db.json", notes);
-    res.json(notes);
+    db.push(newNote);
+    writeFile("db/db.json", db);
+    res.json(db);
     console.log("Note Added!");
   } else {
     res.error("Whoops, there was an error adding the note!");
@@ -42,7 +42,7 @@ router.post("/notes", (req, res) => {
 router.delete("/notes/:id", (req, res) => {
   const noteId = req.params.id; 
   // Array of all notes minus the URL id note
-  const notesKeep = notes.filter((note) => note.id !== noteId);
+  const notesKeep = db.filter((note) => db.id !== noteId);
   writeFile("db/db.json", notesKeep);
   res.json(notesKeep);
 });
