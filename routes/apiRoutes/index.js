@@ -42,9 +42,9 @@ router.post("/notes", (req, res) => {
 router.delete("/notes/:id", (req, res) => {
   const noteId = req.params.id; 
   // Array of all notes minus the URL id note
-  const notesKeep = db.filter((note) => db.id !== noteId);
-  writeFile("db/db.json", notesKeep);
-  res.json(notesKeep);
+  const allNotesSaved = db.filter((note) => db.id !== noteId);
+  writeFile("db/db.json", allNotesSaved);
+  res.json(allNotesSaved);
 });
 
 module.exports = router;
